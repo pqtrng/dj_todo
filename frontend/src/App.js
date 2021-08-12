@@ -34,10 +34,12 @@ class App extends Component {
 
   handleSubmit = (item) => {
     this.toggle();
+
     if (item.id) {
       axios
         .put(`/api/todos/${item.id}/`, item)
         .then((res) => this.refreshList());
+      return;
     }
 
     axios.post("/api/todos/", item).then((res) => this.refreshList());
@@ -48,7 +50,7 @@ class App extends Component {
   };
 
   createItem = () => {
-    const item = { title: "", description: "", completed: "" };
+    const item = { title: "", description: "", completed: false };
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
 
@@ -142,8 +144,8 @@ class App extends Component {
           <Modal
             activeItem={this.state.activeItem}
             toggle={this.toggle}
-            onSave={this.state.handleSubmit}
-          ></Modal>
+            onSave={this.handleSubmit}
+          />
         ) : null}
       </main>
     );
